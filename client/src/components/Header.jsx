@@ -5,7 +5,7 @@ function Header() {
   return (
     <header className="bg-slate-200 shadow-md">
       <div className=" flex justify-between  items-center max-w-6xl mx-auto p-3">
-        <Link>
+        <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
             <span className="text-slate-500">Aurora</span>
             <span className="text-slate-700">Acres</span>
