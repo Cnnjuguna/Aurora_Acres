@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema(
   {
     username: {
-      type: String(),
+      type: String,
       required: true,
       unique: true,
     },
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const User = mongoose.model('User', userSchema);
