@@ -8,9 +8,8 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 
-const SignUp = () => {
+const SignIn = () => {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: '',
   });
@@ -82,7 +81,7 @@ const SignUp = () => {
       </form>
       <div className="flex gap-2 mt-5">
         <p>Don&apos;t have an account?</p>
-        <Link to={'/sign-in'}>
+        <Link to={'/sign-up'}>
           <span className="text-blue-700">Sign Up</span>
         </Link>
       </div>
@@ -91,4 +90,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;
