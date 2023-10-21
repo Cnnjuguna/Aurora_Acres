@@ -1,7 +1,94 @@
-import React from 'react';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  signInStart,
+  signInFailure,
+  signInSuccess,
+} from '../redux/user/userSlice';
 
-function SignIn() {
-  return <div>SignIn</div>;
-}
+import { useDispatch, useSelector } from 'react-redux';
 
-export default SignIn;
+const SignUp = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const { loading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // SIGN UP FORM inputs functionality
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  // SUBMIT functionality
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(signInStart());
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(signInSuccess(data));
+      navigate('/');
+    } catch (error) {
+      // console.error('Error in handleSubmit:', err);
+      dispatch(signInFailure(error.message));
+    }
+  };
+
+  return (
+    <div className="p-3 max-w-lg mx-auto">
+      <h1 className="text-3xl text-center font-semibold my-7">Sign in</h1>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="email"
+          id="email"
+          className="border p-3 rounded-lg"
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          placeholder="password"
+          id="password"
+          className="border p-3 rounded-lg"
+          onChange={handleChange}
+        />
+        <button
+          disabled={loading}
+          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 cursor-pointer"
+        >
+          {loading ? 'Loading...' : 'Sign in'}
+        </button>
+      </form>
+      <div className="flex gap-2 mt-5">
+        <p>Don&apos;t have an account?</p>
+        <Link to={'/sign-in'}>
+          <span className="text-blue-700">Sign Up</span>
+        </Link>
+      </div>
+      {error && <p className="text-red-600 mt-3">{error}</p>}
+    </div>
+  );
+};
+
+export default SignUp;

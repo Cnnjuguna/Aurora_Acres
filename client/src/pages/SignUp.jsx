@@ -82,10 +82,10 @@ function SignUp() {
           {isLoading ? 'Loading...' : 'Sign Up'}
         </button>
       </form>
-      <div className="flex gap-s mt-5">
+      <div className="flex gap-2 mt-5">
         <p>Already have an account?</p>
         <Link to={'/sign-in'}>
-          <span className="text-blue-700">Sign in</span>
+          <span className="text-blue-700">Sign In</span>
         </Link>
       </div>
       {error && <p className="text-red-600 mt-3">{error}</p>}
