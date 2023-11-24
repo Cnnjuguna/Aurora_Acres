@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRouter from './routes/user.routes.js';
 import authRouter from './routes/auth.routes.js';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,9 +16,13 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+// const __dirname = path.resolve();
 
 const app = express();
+
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.set('port', process.env.PORT || 3000);
 
