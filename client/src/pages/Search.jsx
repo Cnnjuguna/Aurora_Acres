@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ListingItem from '../components/ListingItem';
 
 const Search = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
+    const [showMore, setShowMore] = useState(false);
     const [sideBardata, setSideBarData] = useState({
         searchTerm: '',
         type: 'all',
@@ -14,6 +16,7 @@ const Search = () => {
         sort: 'created_at',
         order: 'desc',
     });
+    console.log(listings);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
@@ -47,9 +50,12 @@ const Search = () => {
 
         const fetchListings = async () => {
             setLoading(true);
+            setShowMore(false);
             const searchQuery = urlParams.toString();
-            const res = await fetch(`/api/listings/get?${searchQuery}`);
+            const res = await fetch(`/api/listing/get?${searchQuery}`);
             const data = await res.json();
+            console.log(data);
+            setListings(data);
             setLoading(false);
         };
         fetchListings();
@@ -80,15 +86,17 @@ const Search = () => {
             });
         }
 
-        if (e.target.checked.id === 'sort_order') {
+        if (e.target.id === 'sort_order') {
             const sort = e.target.value.split('_')[0] || 'created_at'; //The first value
             const order = e.target.value.split('_')[1] || 'desc'; //The second value
+
+            setSideBarData({ ...sideBardata, sort, order });
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        //We want to keep the information we already have in the url
+        //We want to keep the previous information we already have in the url and just update
         const urlParams = new URLSearchParams();
         urlParams.set('searchTerm', sideBardata.searchTerm);
         urlParams.set('type', sideBardata.type);
@@ -100,7 +108,7 @@ const Search = () => {
 
         const searchQuery = urlParams.toString(); //We also want to get the search query by first converting to a string
 
-        navigate(`/search?${searchQuery}`);
+        navigate(`/search?${searchQuery}`); //redirect the user to the search page
     };
 
     return (
@@ -210,8 +218,32 @@ const Search = () => {
                     </button>
                 </form>
             </div>
-            <div className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
-                <h1 className="">Listing results:</h1>
+            <div className="flex-1">
+                <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
+                    Listing results:
+                </h1>
+                <div className="p-7 flex flex-wrap gap-4">
+                    {!loading && listings.length === 0 && (
+                        <p className="text-xl text-slate-700">
+                            No Listing found!
+                        </p>
+                    )}
+                    {loading && (
+                        <p className="text-xl text-slate-700 text-center w-full">
+                            Loading...
+                        </p>
+                    )}
+                    {!loading &&
+                        listings &&
+                        listings.map((listing) => (
+                            <ListingItem key={listing._id} listing={listing} />
+                        ))}
+                    {showMore && (
+                        <button className="text-green-700 hover:underline p-7 text-center w-full">
+                            Show more
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

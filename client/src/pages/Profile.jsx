@@ -19,9 +19,8 @@ import {
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-export default function Profile() {
+const Profile = () => {
     const fileRef = useRef(null);
-    const navigate = useNavigate();
     const { currentUser, loading, error } = useSelector((state) => state.user);
     const [file, setFile] = useState(undefined);
     const [filePerc, setFilePerc] = useState(0);
@@ -31,6 +30,7 @@ export default function Profile() {
     const [showListingsError, setShowListingsError] = useState(false);
     const [userListings, setUserListings] = useState([]);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // firebase storage
     // allow read;
@@ -305,4 +305,6 @@ export default function Profile() {
             )}
         </div>
     );
-}
+};
+
+export default Profile;
