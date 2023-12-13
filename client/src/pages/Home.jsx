@@ -16,7 +16,7 @@ function Home() {
     useEffect(() => {
         const fetchOfferListings = async () => {
             try {
-                const res = await fetch(`/api/listings/get?offer=true&limit=4`);
+                const res = await fetch(`/api/listing/get?offer=true&limit=4`);
                 const data = await res.json();
                 setOfferListings(data);
                 fetchRentListings();
@@ -69,6 +69,7 @@ function Home() {
                     <button>Lets get started...</button>
                 </Link>
             </div>
+            {/* swiper */}
             {/* swiper */}
             <Swiper navigation>
                 {offerListings &&

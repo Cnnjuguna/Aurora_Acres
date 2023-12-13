@@ -16,7 +16,7 @@ const Search = () => {
         sort: 'created_at',
         order: 'desc',
     });
-    console.log(listings);
+    // console.log(listings);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
