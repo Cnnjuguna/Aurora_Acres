@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon api/index.js",
         "start": "nodemon api/index.js",
-        "build": "npm install --prefix client && npm run build --prefix client "
+        "build": "bun install --prefix client && bun build --prefix client "
     },
     "devDependencies": {
         "bun-types": "latest"
